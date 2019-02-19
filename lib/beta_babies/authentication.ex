@@ -5,8 +5,8 @@ defmodule BetaBabies.Authentication do
 
   import Ecto.Query, warn: false
   alias BetaBabies.Repo
-
   alias BetaBabies.Authentication.Account
+  alias Comeonin.Bcrypt
 
   @doc """
   Returns the list of accounts.
@@ -100,5 +100,22 @@ defmodule BetaBabies.Authentication do
   """
   def change_account(%Account{} = account) do
     Account.changeset(account, %{})
+  end
+
+  def authenticate_account(username, plain_text_password) do
+    query = from account in Account, where: account.username == ^username
+
+    case Repo.one(query) do
+      nil ->
+        Bcrypt.dummy_checkpw()
+        {:error, :invalid_credentials}
+
+      account ->
+        if Bcrypt.checkpw(plain_text_password, account.password) do
+          {:ok, account}
+        else
+          {:error, :invalid_credentials}
+        end
+    end
   end
 end
