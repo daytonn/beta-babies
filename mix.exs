@@ -33,8 +33,11 @@ defmodule BetaBabies.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 0.12"},
+      {:comeonin, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:gettext, "~> 0.11"},
+      {:guardian, "~> 1.0"},
       {:jason, "~> 1.0"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_ecto, "~> 4.0"},
