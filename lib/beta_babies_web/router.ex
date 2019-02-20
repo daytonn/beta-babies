@@ -13,8 +13,16 @@ defmodule BetaBabiesWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug BetaBabies.Authentication.Pipeline
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   scope "/", BetaBabiesWeb do
-    pipe_through :browser
+    pipe_through [:browser, :auth]
 
     get "/", PageController, :index
   end
