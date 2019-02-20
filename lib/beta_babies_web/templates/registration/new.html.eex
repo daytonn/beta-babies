@@ -1,7 +1,6 @@
-<h2>Login Page</h2>
+<h2>Signup for Beta Babies!</h2>
 
-<%= form_for @changeset, @action, fn f -> %>
-
+<%= form_for @changeset, Routes.registration_path(@conn, :create), fn f -> %>
   <div class="form-group">
     <%= label f, :email, class: "control-label" %>
     <%= text_input f, :email, class: "form-control" %>
@@ -12,6 +11,12 @@
     <%= label f, :password, class: "control-label" %>
     <%= password_input f, :password, class: "form-control" %>
     <%= error_tag f, :password %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :password_confirmation, class: "control-label" %>
+    <%= password_input f, :password_confirmation, class: "form-control" %>
+    <%= error_tag f, :password_confirmation %>
   </div>
 
   <div class="form-group">

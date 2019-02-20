@@ -26,15 +26,18 @@ defmodule BetaBabiesWeb.Router do
 
     get "/", PageController, :index
 
-    get "/login", SessionController, :new
-    post "/login", SessionController, :login
-    post "/logout", SessionController, :logout
+    get "login", SessionController, :new
+    post "login", SessionController, :login
+    post "logout", SessionController, :logout
+
+    get "signup", RegistrationController, :new
+    post "signup", RegistrationController, :create
   end
 
   scope "/", BetaBabiesWeb do
     pipe_through [:browser, :auth, :ensure_auth]
 
-    get "/secret", PageController, :secret
+    get "secret", PageController, :secret
   end
 
   # Other scopes may use custom stacks.

@@ -13,8 +13,8 @@ defmodule BetaBabiesWeb.SessionController do
     end
   end
 
-  def login(conn, %{"account" => %{"username" => username, "password" => password}}) do
-    Authentication.authenticate_account(username, password)
+  def login(conn, %{"account" => %{"email" => email, "password" => password}}) do
+    Authentication.authenticate_account(email, password)
     |> login_reply(conn)
   end
 

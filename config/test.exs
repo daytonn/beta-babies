@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :beta_babies, BetaBabies.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "password",
   database: "beta_babies_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

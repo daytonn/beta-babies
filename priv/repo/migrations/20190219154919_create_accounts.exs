@@ -3,11 +3,10 @@ defmodule BetaBabies.Repo.Migrations.CreateAccounts do
 
   def change do
     create table(:accounts) do
-      add :username, :string
+      add :email, :string
       add :password, :string
 
       timestamps()
     end
-
   end
 end

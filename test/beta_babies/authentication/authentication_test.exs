@@ -6,9 +6,9 @@ defmodule BetaBabies.AuthenticationTest do
   describe "accounts" do
     alias BetaBabies.Authentication.Account
 
-    @valid_attrs %{password: "some password", username: "some username"}
-    @update_attrs %{password: "some updated password", username: "some updated username"}
-    @invalid_attrs %{password: nil, username: nil}
+    @valid_attrs %{password: "some password", email: "test@example.com"}
+    @update_attrs %{password: "some updated password", email: "updated@example.com"}
+    @invalid_attrs %{password: nil, email: nil}
 
     def account_fixture(attrs \\ %{}) do
       {:ok, account} =
@@ -31,8 +31,8 @@ defmodule BetaBabies.AuthenticationTest do
 
     test "create_account/1 with valid data creates a account" do
       assert {:ok, %Account{} = account} = Authentication.create_account(@valid_attrs)
-      assert account.password == "some password"
-      assert account.username == "some username"
+      assert is_bitstring(account.password)
+      assert account.email == "test@example.com"
     end
 
     test "create_account/1 with invalid data returns error changeset" do
@@ -42,8 +42,8 @@ defmodule BetaBabies.AuthenticationTest do
     test "update_account/2 with valid data updates the account" do
       account = account_fixture()
       assert {:ok, %Account{} = account} = Authentication.update_account(account, @update_attrs)
-      assert account.password == "some updated password"
-      assert account.username == "some updated username"
+      assert is_bitstring(account.password)
+      assert account.email == "updated@example.com"
     end
 
     test "update_account/2 with invalid data returns error changeset" do

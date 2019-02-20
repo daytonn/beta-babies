@@ -5,7 +5,8 @@ defmodule BetaBabies.Authentication.Account do
 
   schema "accounts" do
     field :password, :string
-    field :username, :string
+    field :email, :string
+    field :password_confirmation, :string, virtual: true
 
     timestamps()
   end
@@ -13,8 +14,8 @@ defmodule BetaBabies.Authentication.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:username, :password])
-    |> validate_required([:username, :password])
+    |> cast(attrs, [:email, :password])
+    |> validate_required([:email, :password])
     |> put_password_hash()
   end
 

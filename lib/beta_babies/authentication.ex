@@ -102,8 +102,8 @@ defmodule BetaBabies.Authentication do
     Account.changeset(account, %{})
   end
 
-  def authenticate_account(username, plain_text_password) do
-    query = from account in Account, where: account.username == ^username
+  def authenticate_account(email, plain_text_password) do
+    query = from account in Account, where: account.email == ^email
 
     case Repo.one(query) do
       nil ->
