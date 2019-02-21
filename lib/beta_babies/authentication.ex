@@ -102,6 +102,16 @@ defmodule BetaBabies.Authentication do
     Account.changeset(account, %{})
   end
 
+  @doc """
+  Authenticates an account via email and password
+
+  ## Examples
+      iex> authenticate_account(valid_email, valid_password)
+      {:ok, %Account{}}
+
+      iex> authenticate_account(valid_email, invalid_password)
+      {:error, :invalid_credentials}
+  """
   def authenticate_account(email, plain_text_password) do
     query = from account in Account, where: account.email == ^email
 
@@ -117,5 +127,8 @@ defmodule BetaBabies.Authentication do
           {:error, :invalid_credentials}
         end
     end
+  end
+
+  def validate_confirmation_password do
   end
 end

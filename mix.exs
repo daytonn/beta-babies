@@ -36,6 +36,8 @@ defmodule BetaBabies.MixProject do
       {:bcrypt_elixir, "~> 0.12"},
       {:comeonin, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
+      {:espec, "~> 1.6.5", only: :test},
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:gettext, "~> 0.11"},
       {:guardian, "~> 1.0"},
       {:jason, "~> 1.0"},

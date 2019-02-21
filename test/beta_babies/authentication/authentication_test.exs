@@ -1,20 +1,26 @@
 defmodule BetaBabies.AuthenticationTest do
   use BetaBabies.DataCase
 
-  alias BetaBabies.Authentication
+  alias BetaBabies.{Repo, Authentication, Authentication.Account}
 
   describe "accounts" do
     alias BetaBabies.Authentication.Account
 
-    @valid_attrs %{password: "some password", email: "test@example.com"}
-    @update_attrs %{password: "some updated password", email: "updated@example.com"}
+    @valid_password "password"
+    @valid_email "test@example.com"
+    @valid_attrs %{password: @valid_password, email: @valid_email}
+
+    @updated_email "updated@example.com"
+    @updated_password "password"
+    @update_attrs %{password: @updated_password, email: @updated_email}
+
     @invalid_attrs %{password: nil, email: nil}
 
-    def account_fixture(attrs \\ %{}) do
+    def account_fixture() do
       {:ok, account} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Authentication.create_account()
+        %Account{}
+        |> Account.changeset(@valid_attrs)
+        |> Repo.insert()
 
       account
     end
@@ -32,35 +38,57 @@ defmodule BetaBabies.AuthenticationTest do
     test "create_account/1 with valid data creates a account" do
       assert {:ok, %Account{} = account} = Authentication.create_account(@valid_attrs)
       assert is_bitstring(account.password)
-      assert account.email == "test@example.com"
+      assert account.email == @valid_email
     end
 
     test "create_account/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Authentication.create_account(@invalid_attrs)
+      {status,
+       %{
+         errors: [
+           email: {email_error, _},
+           password: {password_error, _}
+         ]
+       }} = Authentication.create_account(@invalid_attrs)
+
+      assert status == :error
+      assert email_error == "can't be blank"
+      assert password_error == "can't be blank"
     end
 
     test "update_account/2 with valid data updates the account" do
       account = account_fixture()
-      assert {:ok, %Account{} = account} = Authentication.update_account(account, @update_attrs)
-      assert is_bitstring(account.password)
-      assert account.email == "updated@example.com"
+      %{password: existing_password} = account
+
+      {status, updated_account} = Authentication.update_account(account, @update_attrs)
+
+      assert status == :ok
+      assert updated_account.id == account.id
+      assert updated_account.email == @updated_email
+      assert updated_account.password != existing_password
     end
 
     test "update_account/2 with invalid data returns error changeset" do
       account = account_fixture()
-      assert {:error, %Ecto.Changeset{}} = Authentication.update_account(account, @invalid_attrs)
-      assert account == Authentication.get_account!(account.id)
+
+      {status,
+       %{
+         errors: [
+           email: {email_error, _},
+           password: {password_error, _}
+         ]
+       }} = Authentication.update_account(account, @invalid_attrs)
+
+      assert status == :error
+      assert email_error == "can't be blank"
+      assert password_error == "can't be blank"
     end
 
     test "delete_account/1 deletes the account" do
       account = account_fixture()
-      assert {:ok, %Account{}} = Authentication.delete_account(account)
-      assert_raise Ecto.NoResultsError, fn -> Authentication.get_account!(account.id) end
-    end
+      {status, %Account{}} = Authentication.delete_account(account)
 
-    test "change_account/1 returns a account changeset" do
-      account = account_fixture()
-      assert %Ecto.Changeset{} = Authentication.change_account(account)
+      assert status == :ok
+      assert length(Repo.all(Account)) == 0
     end
   end
 end
