@@ -3,10 +3,12 @@ defmodule BetaBabies.Repo.Migrations.CreateAccounts do
 
   def change do
     create table(:accounts) do
-      add :email, :string
-      add :password, :string
+      add :email, :string, null: false
+      add :password, :string, null: false
 
       timestamps()
     end
+
+    create unique_index(:accounts, [:email])
   end
 end

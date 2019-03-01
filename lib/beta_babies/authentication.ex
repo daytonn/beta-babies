@@ -17,6 +17,7 @@ defmodule BetaBabies.Authentication do
       [%Account{}, ...]
 
   """
+
   def list_accounts do
     Repo.all(Account)
   end
@@ -99,7 +100,7 @@ defmodule BetaBabies.Authentication do
 
   """
   def change_account(%Account{} = account) do
-    Account.changeset(account, %{})
+    Account.creation_changeset(account, %{})
   end
 
   @doc """
@@ -129,6 +130,15 @@ defmodule BetaBabies.Authentication do
     end
   end
 
-  def validate_confirmation_password do
+  def validate_confirmation_password(
+        %Ecto.Changeset{
+          changes: %{password: password, password_confirmation: password_confirmation}
+        } = account
+      ) do
+    if password_confirmation == password do
+      {:ok, account.changes}
+    else
+      {:error, Ecto.Changeset.add_error(account, :password, "passwords do not match")}
+    end
   end
 end

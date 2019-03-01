@@ -14,8 +14,14 @@ defmodule BetaBabies.Authentication.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :password_confirmation])
     |> validate_required([:email, :password])
+    |> unique_constraint(:email)
+  end
+
+  def creation_changeset(account, attrs) do
+    account
+    |> changeset(attrs)
     |> put_password_hash()
   end
 

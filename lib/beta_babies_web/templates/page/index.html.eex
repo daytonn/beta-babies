@@ -32,4 +32,12 @@
       </li>
     </ul>
   </article>
+
+  <dl>
+    <dt>Name</dt>
+    <dd>%</dd>
+
+    <dt>Gender</dt>
+    <dd>< /dd>
+  </dl>
 </section>
