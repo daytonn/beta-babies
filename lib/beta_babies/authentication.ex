@@ -37,6 +37,7 @@ defmodule BetaBabies.Authentication do
 
   """
   def get_account!(id), do: Repo.get!(Account, id)
+  def get_account(id), do: Repo.get(Account, id)
 
   @doc """
   Creates a account.
